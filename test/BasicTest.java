@@ -99,5 +99,41 @@ public class BasicTest extends UnitTest {
 		assertEquals("second comment!", theComment.content);
 		assertNotNull(theComment.postedAt);
 	}
+	
+	@Test
+	public void useTheCommentsRelation() {
+		// Create and save a user
+		User bob = new User("bob@gmail.com", "secrets", "Bob").save();
+		
+		// Create a new post
+		Post post = new Post(bob, "My first post", "Hello world").save();
+		
+		// Add a couple comments to the post
+		post.addComment("Steve", "first comment!").save();
+		post.addComment("Ed", "second comment!").save();
+		
+		// Make sure everything's there
+		assertEquals(1, User.count());
+		assertEquals(1, Post.count());
+		assertEquals(2, Comment.count());
+		
+		// Get the post
+		Post thePost = Post.find("byAuthor", bob).first();
+		assertNotNull(thePost);
+		
+		// Get the comments
+		Comment theComment = thePost.comments.get(0);
+		assertEquals(2, thePost.comments.size());
+		assertEquals("Steve", theComment.author);
+		assertEquals("first comment!", theComment.content);
+		
+		// Delete the post
+		thePost.delete();
+		
+		// Ensure the post deletion got rid of the comments too
+		assertEquals(1, User.count());
+		assertEquals(0, Post.count());
+		assertEquals(0, Comment.count());
+	}
 
 }
