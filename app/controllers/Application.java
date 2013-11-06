@@ -5,6 +5,9 @@ import play.mvc.*;
 
 import play.Play;
 import play.data.validation.*;
+import play.libs.*;
+
+import play.cache.*;
 
 import java.util.*;
 
@@ -29,17 +32,37 @@ public class Application extends Controller {
 	
 	public static void show(Long id) {
 		Post post = Post.findById(id);
-		render(post);
+		String randomID = Codec.UUID();
+		render(post, randomID);
 	}
 	
-	public static void postComment(Long postId, @Required String author, @Required String content) {
+	public static void postComment(
+		Long postId, 
+		@Required(message="Author is required") String author,
+		@Required(message="A message is required") String content,
+		@Required(message="Please type the code") String code,
+		String randomID) {
+		
 		Post post = Post.findById(postId);
+		// Validate the Captcha
+		System.out.println("ID: " + randomID + "\nEntered: "+code+ "\nExpected: "+ Cache.get(randomID));
+		validation.equals(code, Cache.get(randomID)).message("Invalid code. Please try again.");
+		
 		if(validation.hasErrors()) {
-			render("Application/show.html", post);
+			render("Application/show.html", post, randomID, author, content);
 		}
-		post.addComment(author, content);
-		flash.success("Thanks for posting, %s!", author);
-		show(postId);
+		else {
+			post.addComment(author, content);
+			flash.success("Thanks for posting, %s!", author);
+			show(postId);
+		}
+	}
+	
+	public static void captcha(String id) {
+		Images.Captcha captcha = Images.captcha();
+		String code = captcha.getText("#E4EAFD");
+		Cache.set(id, code, "10mn");
+		renderBinary(captcha);
 	}
 
 }
