@@ -6,7 +6,10 @@
 GET     /                                       Application.index
 
 # Show Post
-GET		/posts/{id}								Application.show
+GET		/posts/{<[0-9]+>id}								Application.show
+
+# Show Tagged
+GET		/posts/{tag}							Application.listTagged
 
 # Post Comment
 POST	/posts/{postId}/comments				Application.postComment
