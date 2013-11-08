@@ -135,5 +135,76 @@ public class BasicTest extends UnitTest {
 		assertEquals(0, Post.count());
 		assertEquals(0, Comment.count());
 	}
+	
+	@Test
+	public void fullTest() {
+		
+		// Load data from YML
+		Fixtures.loadModels("data.yml");
+		
+		// Count things
+		assertEquals(2, User.count());
+		assertEquals(3, Post.count());
+		assertEquals(3, Comment.count());
+		
+		// Try to connect as some of the users
+		assertNotNull(User.connect("bob@gmail.com", "secret"));
+		assertNotNull(User.connect("jeff@gmail.com", "secret"));
+		assertNull(User.connect("jeff@gmail.com", "badpassword"));
+		assertNull(User.connect("tom@gmail.com", "secret"));
+		
+		// Find Bob's posts
+		List<Post> bobPosts = Post.find("author.email", "bob@gmail.com").fetch();
+		assertEquals(2, bobPosts.size());
+		
+		// Find comments related to all of Bob's posts
+		List<Comment> bobComments = Comment.find("post.author.email", "bob@gmail.com").fetch();
+		assertEquals(3, bobComments.size());
+		
+		// Find the most recent post
+		Post frontPost = Post.find("order by postedAt desc").first();
+		assertNotNull(frontPost);
+		assertEquals("About the model layer", frontPost.title);
+		
+		// Check that the post has two comments
+		assertEquals(2, frontPost.comments.size());
+		
+		// Post and check a new comment
+		frontPost.addComment("Jim", "Hello there");
+		assertEquals(3, frontPost.comments.size());
+		assertEquals(4, Comment.count());
+	}
+	
+	@Test
+	public void testTags() {
+		// create a user
+		User bob = new User("bob@gmail.com", "secret", "Bob").save();
+		
+		// create a post
+		Post post = new Post(bob, "this", "post").save();
+		Post anotherPost = new Post(bob, "that", "other post").save();
+		
+		// make sure the tag hasn't been used yet
+		assertEquals(0, Post.findTaggedWith("Red").size());
+		
+		// tag this post with the new tag
+		post.tagItWith("Red").tagItWith("Blue").save();
+		anotherPost.tagItWith("Red").tagItWith("Green").save();
+		
+		// check the tags
+		assertEquals(2, Post.findTaggedWith("Red").size());
+		assertEquals(1, Post.findTaggedWith("Blue").size());
+		assertEquals(1, Post.findTaggedWith("Green").size());
+		
+		// Now test retrieval based on multiple tags
+		assertEquals(1, Post.findTaggedWith("Red", "Blue").size());
+		assertEquals(1, Post.findTaggedWith("Red", "Green").size());
+		assertEquals(0, Post.findTaggedWith("Red", "Green", "Blue").size());
+		assertEquals(0, Post.findTaggedWith("Green", "Blue").size());
+		
+		// Now test that we can get a Tag Cloud
+		List<Map> cloud = Tag.getCloud();
+		assertEquals("[{tag=Blue, pound=1}, {tag=Green, pound=1}, {tag=Red, pound=2}]", cloud.toString());
+	}
 
 }

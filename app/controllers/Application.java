@@ -46,7 +46,9 @@ public class Application extends Controller {
 		Post post = Post.findById(postId);
 		// Validate the Captcha
 		System.out.println("ID: " + randomID + "\nEntered: "+code+ "\nExpected: "+ Cache.get(randomID));
-		validation.equals(code, Cache.get(randomID)).message("Invalid code. Please try again.");
+		validation.equals(
+			code, Cache.get(randomID)
+				).message("Invalid code. Please try again.");
 		
 		if(validation.hasErrors()) {
 			render("Application/show.html", post, randomID, author, content);
@@ -54,6 +56,7 @@ public class Application extends Controller {
 		else {
 			post.addComment(author, content);
 			flash.success("Thanks for posting, %s!", author);
+			Cache.delete(randomID);
 			show(postId);
 		}
 	}
