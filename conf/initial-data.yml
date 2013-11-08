@@ -1,5 +1,7 @@
 # Test data
 
+# Users
+
 User(bob):
     email:          bob@gmail.com
     password:       secret
@@ -10,7 +12,23 @@ User(jeff):
     email:          jeff@gmail.com
     password:       secret
     fullname:       Jeff    
-    
+
+# Tags
+                 
+Tag(play):
+    name:           Play
+ 
+Tag(architecture):
+    name:           Architecture
+ 
+Tag(test):
+    name:           Test
+ 
+Tag(mvc):
+    name:           MVC
+
+# Posts
+
 Post(firstBobPost):
     title:          About the model layer
     postedAt:       2009-06-14
@@ -37,6 +55,10 @@ Post(jeffPost):
     title:          The MVC application
     postedAt:       2009-06-06
     author:         jeff
+    tags:
+                    - play
+                    - architecture
+                    - mvc
     content:        >
                     A Play! application follows the MVC architectural pattern as applied to the 
                     architecture of the Web.
@@ -44,6 +66,8 @@ Post(jeffPost):
                     This pattern splits the application into separate layers: the Presentation 
                     layer and the Model layer. The Presentation layer is further split into a 
                     View and a Controller layer.
+
+# Comments
                     
 Comment(c1):
     author:         Guest
@@ -64,5 +88,4 @@ Comment(c3):
     content:        >
                     This post is useless ?
     postedAt:       2009-04-05
-    post:           secondBobPost    
-                 
+    post:           secondBobPost

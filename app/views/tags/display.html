@@ -10,12 +10,17 @@
         #{if _as != 'full'}
             <span class="post-comments">
                 &nbsp;|&nbsp; ${_post.comments.size() ?: 'no'} 
-                comment${_post.comments.size().pluralize()}
-                #{if _post.comments}
-                    , latest by ${_post.comments[-1].author}
-                #{/if}
+                comment${_post.comments.size().pluralize()}#{if _post.comments}, latest by ${_post.comments[-1].author}#{/if}
             </span>
         #{/if}
+		#{elseif _post.tags}
+		    <span class="post-tags">
+		        - Tagged
+		        #{list items:_post.tags, as:'tag'}
+		            <a href="#">${tag}</a>${tag_isLast ? '' : ', '}
+		        #{/list}
+		    </span>
+		#{/elseif}
     </div>
     #{if _as != 'teaser'}
         <div class="post-content">
