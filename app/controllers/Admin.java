@@ -25,17 +25,31 @@ public class Admin extends Controller {
 		render(posts);
 	}
 	
-	public static void form() {
+	public static void form(Long id) {
+		if(id != null) {
+			Post post = Post.findById(id);
+			render(post);
+		}
 		render();
 	}
 	
-	public static void save(String title, String content, String tags) {
+	public static void save(Long id, String title, String content, String tags) {
 		
-		// Make the post
-		User author = User.find("byEmail", Security.connected()).first();
-		Post post = new Post(author, title, content);
+		Post post;
+		if(id == null) {
+			// Create the post
+			User author = User.find("byEmail", Security.connected()).first();
+			post = new Post(author, title, content);
+		}
+		else {
+			// Update the post
+			post = Post.findById(id);
+			post.title = title;
+			post.content = content;
+			post.tags.clear();
+		}
 		
-		// Make the tags
+		// Set the tags
 		for(String tag : tags.split("\\s+")) {
 			if(tag.trim().length() > 0) {
 				post.tags.add(Tag.findOrCreateByName(tag));
