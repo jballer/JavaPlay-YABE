@@ -6,7 +6,7 @@
 GET     /                                       Application.index
 
 # Show Post
-GET		/posts/{<[0-9]+>id}								Application.show
+GET		/posts/{<[0-9]+>id}						Application.show
 
 # Show Tagged
 GET		/posts/{tag}							Application.listTagged
@@ -16,6 +16,10 @@ POST	/posts/{postId}/comments				Application.postComment
 
 # Show Captcha
 GET		/captcha								Application.captcha
+
+# Write a new post
+GET		/admin/new								Admin.form
+POST	/admin/new								Admin.save
 
 # Administration
 GET		/admin/?								Admin.index
