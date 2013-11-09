@@ -17,14 +17,18 @@ POST	/posts/{postId}/comments				Application.postComment
 # Show Captcha
 GET		/captcha								Application.captcha
 
+# Administration
+GET		/admin/?								Admin.index
+*		/admin									module:crud
+
 # Ignore favicon requests
 GET     /favicon.ico                            404
 
 # Map static resources from the /app/public folder to the /public path
 GET     /public/                                staticDir:public
 
-# CRUD
-*		/admin									module:crud
-
 # Catch all
 *       /{controller}/{action}                  {controller}.{action}
+
+# Secure
+*		/										module:secure
