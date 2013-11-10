@@ -1,5 +1,6 @@
 package controllers;
 
+import play.db.jpa.GenericModel;
 import models.*;
 
 public class Security extends Secure.Security {
@@ -12,9 +13,9 @@ public class Security extends Secure.Security {
 		Application.index();
 	}
 	
-	static void onAuthenticated() {
-		Application.index();
-	}
+//	static void onAuthenticated() {
+//		Application.index();
+//	}
 	
 	static boolean check(String profile) {
 		if("admin".equals(profile)) {

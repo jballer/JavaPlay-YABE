@@ -1,5 +1,8 @@
 import org.junit.*;
+
 import java.util.*;
+
+import play.db.jpa.GenericModel;
 import play.test.*;
 import models.*;
 
