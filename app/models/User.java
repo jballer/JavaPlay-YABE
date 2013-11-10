@@ -1,6 +1,5 @@
 package models;
 
-import java.util.*;
 import javax.persistence.*;
 
 import play.db.jpa.*;
@@ -29,6 +28,7 @@ public class User extends Model {
 		return find("byEmailAndPassword", email, password).first();
 	}
 	
+	@Override
 	public String toString() {
 		return email;
 	}

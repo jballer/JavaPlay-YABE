@@ -1,6 +1,7 @@
 package models;
 
 import java.util.*;
+
 import javax.persistence.*;
 
 import play.db.jpa.*;
@@ -49,11 +50,11 @@ public class Post extends Model {
 	}
 	
 	public Post previous() {
-		return Post.find("postedAt < ? order by postedAt desc", postedAt).first();
+		return find("postedAt < ? order by postedAt desc", postedAt).first();
 	}
 	
 	public Post next() {
-		return Post.find("postedAt > ? order by postedAt asc", postedAt).first();
+		return find("postedAt > ? order by postedAt asc", postedAt).first();
 	}
 	
 	// TAGS
@@ -77,6 +78,7 @@ public class Post extends Model {
 		return result;
 	}
 	
+	@Override
 	public String toString() {
 		return title;
 	}

@@ -1,12 +1,10 @@
 package controllers;
 
-import play.*;
 import play.mvc.*;
-
 import play.Play;
 import play.data.validation.*;
+import play.db.jpa.GenericModel;
 import play.libs.*;
-
 import play.cache.*;
 
 import java.util.*;
@@ -45,10 +43,15 @@ public class Application extends Controller {
 		
 		Post post = Post.findById(postId);
 		// Validate the Captcha
-		System.out.println("ID: " + randomID + "\nEntered: "+code+ "\nExpected: "+ Cache.get(randomID));
-		validation.equals(
-			code, Cache.get(randomID)
-				).message("Invalid code. Please try again.");
+		// System.out.println("ID: " + randomID + "\nEntered: "+code+ "\nExpected: "+ Cache.get(randomID));
+		if(!Play.id.equals("test")) {
+			validation.equals(
+				code.toLowerCase(), ((String)Cache.get(randomID)).toLowerCase()
+			).message("Invalid code. Please try again.");
+		}
+		else {
+			System.out.println("WARNING: Running in test mode. CAPTCHA not validated!");
+		}
 		
 		if(validation.hasErrors()) {
 			render("Application/show.html", post, randomID, author, content);

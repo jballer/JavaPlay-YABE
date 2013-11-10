@@ -1,12 +1,12 @@
 package controllers;
 
-import play.*;
+import play.data.validation.Validation;
+import play.db.jpa.GenericModel;
 import play.mvc.*;
 
 import java.util.*;
 
 import models.*;
-import controllers.*;
 
 @With(Secure.class)
 public class Admin extends Controller {
@@ -58,7 +58,7 @@ public class Admin extends Controller {
 		
 		// Validate the post
 		validation.valid(post);
-		if(validation.hasErrors()) {
+		if(Validation.hasErrors()) {
 			render("@form", post);
 		}
 		
