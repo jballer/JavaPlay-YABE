@@ -7,6 +7,7 @@
 	
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="/Users/jballer/Developer/git/play-1.2.6/framework/play-1.2.6.jar" sourcepath="/Users/jballer/Developer/git/play-1.2.6/framework/src" />
+	<classpathentry kind="lib" path="/Users/jballer/Developer/git/yabe/lib/jbcrypt-0.3m.jar" sourcepath="/Users/jballer/.ivy2/cache/org.mindrot/jbcrypt/sources/jbcrypt-0.3m-sources.jar"/>
 	<classpathentry kind="lib" path="/Users/jballer/Developer/git/play-1.2.6/framework/lib/activation-1.1.1.jar"/>
 	<classpathentry kind="lib" path="/Users/jballer/Developer/git/play-1.2.6/framework/lib/antlr-2.7.7.jar"/>
 	<classpathentry kind="lib" path="/Users/jballer/Developer/git/play-1.2.6/framework/lib/asm-all-3.3.1.jar"/>

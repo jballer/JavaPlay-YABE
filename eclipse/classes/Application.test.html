@@ -1,0 +1,60 @@
+*{ You can use plain selenium command using the selenium tag }*
+
+#{fixture delete:'all', load:'data.yml' /}
+
+#{selenium}
+	clearSession()
+
+    // Open the home page, and check that no error occured
+    open('/')
+    waitForPageToLoad(1000)
+    assertNotTitle('Application error')
+#{/selenium}
+
+#{selenium 'Check home page'}
+	clearSession()
+	
+	// Open home page
+	open('/')
+	
+	// Check that the front post is there
+	assertTextPresent('About the model layer')
+	assertTextPresent('by Bob, 13 Jun 09')
+	assertTextPresent('2 comments, latest by Mike')
+	assertTextPresent('It is the domain-specific representation')
+	
+	// Check older posts
+	assertTextPresent('The MVC application')
+	assertTextPresent('Just a test of YABE')
+
+#{/selenium}
+
+#{selenium 'Test comments'}
+	
+	// Click on 'The MVC application post'
+	clickAndWait('link=The MVC application')
+	assertTextPresent('The MVC application')
+	assertTextPresent('no comments')
+	
+	// Post a comment
+	type('content', 'Hello')
+	clickAndWait('css=input[type=submit]')
+	
+	// Expect a validation error
+	assertTextPresent('no comments')
+	assertTextPresent('Author is required')
+	type('author', 'Me, myself, and I')
+	clickAndWait('css=input[type=submit]')
+	
+	// Expect a CAPTCHA error
+	assertTextPresent('no comments')
+	assertTextPresent('Please type the code')
+	type('code', '12345')
+	clickAndWait('css=input[type=submit]')
+	
+	// Comment should post. Check for it.
+	assertTextPresent('Thanks for posting, Me, myself, and I!')
+	assertTextPresent('1 comment')
+	assertTextPresent('Hello')
+	
+#{/selenium}
