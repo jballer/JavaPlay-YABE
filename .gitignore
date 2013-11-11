@@ -44,3 +44,4 @@ server.pid
 *.iml
 *.eml
 >>>>>>> 4778c3f4e808e3eae9b1cf9b59749685daf6b07b
+conf/application.conf
