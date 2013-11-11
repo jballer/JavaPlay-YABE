@@ -2,6 +2,8 @@ package models;
 
 import javax.persistence.*;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import play.db.jpa.*;
 import play.data.validation.*;
 
@@ -24,8 +26,22 @@ public class User extends Model {
 		this.fullname = fullname;
 	}
 	
+	public void setPassword(String cleartext) {
+		password = BCrypt.hashpw(cleartext, BCrypt.gensalt());
+	}
+	
+	public boolean checkPassword(String cleartext) {
+		return BCrypt.checkpw(cleartext, password);
+	}
+	
 	public static User connect(String email, String password) {
-		return find("byEmailAndPassword", email, password).first();
+		User user = find("byEmail", email.toLowerCase()).first();
+		if(user != null && user.checkPassword(password)) {
+			return  user;
+		}
+		else {
+			return null;
+		}
 	}
 	
 	@Override
