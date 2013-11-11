@@ -3,3 +3,4 @@
 require:
     - play -> crud
     - play -> secure
+    - org.mindrot -> jbcrypt 0.3m
